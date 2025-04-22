@@ -42,12 +42,12 @@ clean:
 # Docker commands
 docker-up:
 	@echo "Starting Docker containers..."
-	docker-compose up
+	docker compose up
 
 docker-down:
 	@echo "Stopping Docker containers..."
-	docker-compose down
+	docker compose down
 
 docker-build:
 	@echo "Building Docker containers..."
-	docker-compose build 
+	docker compose build 
