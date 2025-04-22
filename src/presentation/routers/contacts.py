@@ -47,11 +47,63 @@ async def get_contact_companies(
         companies = await company_service.get_companies_associated_with_contact(
             access_token=oauth_data.access_token, contact_id=contact_id
         )
-
         return [company.to_dict() for company in companies]
     except HubSpotOperationError as e:
         raise HTTPException(
             status_code=400, detail="Failed to fetch companies from HubSpot"
         )
     except Exception as e:
+        raise HTTPException(status_code=500, detail="An unexpected error occurred")
+
+
+@router.post("/{contact_id}/companies/{company_id}")
+async def add_company_association(
+    contact_id: str,
+    company_id: str,
+    oauth_data: HubSpotOAuthData = Depends(get_oauth_data),
+) -> dict:
+    """Add a company association to a contact."""
+    try:
+        await company_service.create_association(
+            oauth_data.access_token,
+            contact_id,
+            company_id,
+        )
+
+        return {
+            "status": "success",
+            "message": "Company association added successfully",
+        }
+    except HubSpotOperationError as e:
+        raise HTTPException(status_code=400, detail="Failed to add company association")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="An unexpected error occurred")
+
+
+@router.delete("/{contact_id}/companies/{company_id}")
+async def remove_company_association(
+    contact_id: str,
+    company_id: str,
+    oauth_data: HubSpotOAuthData = Depends(get_oauth_data),
+) -> dict:
+    """Remove a company association from a contact."""
+    try:
+        await company_service.remove_association(
+            oauth_data.access_token,
+            contact_id,
+            company_id,
+        )
+
+        return {
+            "status": "success",
+            "message": "Company association removed successfully",
+        }
+    except HubSpotOperationError as e:
+        raise HTTPException(
+            status_code=400, detail="Failed to remove company association"
+        )
+    except Exception as e:
+        import traceback
+
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail="An unexpected error occurred")
