@@ -123,6 +123,15 @@ class Contact:
             phone=data["phone"],
         )
 
+    def to_dict(self) -> dict:
+        """Convert to dictionary for storage."""
+        return {
+            "id": self.id,
+            "name": self.name,
+            "email": self.email,
+            "phone": self.phone,
+        }
+
 
 @dataclass
 class Company:
@@ -151,3 +160,14 @@ class Company:
             phone=data.get("phone"),
             associated=data.get("associated", False),
         )
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary for storage."""
+        return {
+            "id": self.id,
+            "name": self.name,
+            "domain": self.domain,
+            "industry": self.industry,
+            "phone": self.phone,
+            "associated": self.associated,
+        }
