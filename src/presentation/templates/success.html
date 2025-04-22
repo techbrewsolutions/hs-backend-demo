@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Installation Successful</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .success-icon {
+            color: #00a47c;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        p {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+        .redirect-text {
+            color: #888;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-icon">✓</div>
+        <h1>Installation Successful!</h1>
+        <p>Thank you for installing our app. You'll be redirected to your HubSpot portal shortly.</p>
+        <p class="redirect-text">Redirecting in <span id="countdown">5</span> seconds...</p>
+    </div>
+
+    <script>
+        let seconds = 5;
+        const countdown = document.getElementById('countdown');
+        
+        const timer = setInterval(() => {
+            seconds--;
+            countdown.textContent = seconds;
+            
+            if (seconds <= 0) {
+                clearInterval(timer);
+                window.location.href = "{{ redirect_url }}";
+            }
+        }, 1000);
+    </script>
+</body>
+</html> 
