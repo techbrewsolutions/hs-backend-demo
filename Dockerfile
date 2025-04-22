@@ -1,24 +1,24 @@
-FROM python:3.10-slim
+FROM python:3.11-slim
 
 WORKDIR /app
-
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
 
 # Install uv
 RUN pip install uv
 
-# Copy dependency files
-COPY pyproject.toml ./
+# Copy requirements first to leverage Docker cache
+COPY pyproject.toml .
 
-# Install Python dependencies
-RUN uv pip install .
+# Install dependencies
+RUN uv pip install --system .
 
-# Copy application code
-COPY src/ ./src/
-COPY tests/ ./tests/
+# Copy the rest of the application
+COPY . .
 
-# Run the application
-CMD ["uvicorn", "src.presentation.api:app", "--host", "0.0.0.0", "--port", "8000"] 
+# Create data directory
+RUN mkdir -p .data
+
+# Expose the port the app runs on
+EXPOSE 8000
+
+# Command to run the application
+CMD ["uvicorn", "src.presentation.api:app", "--host", "0.0.0.0", "--port", "8000", "--reload"] 

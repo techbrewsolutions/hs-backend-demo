@@ -43,11 +43,26 @@ A backend service for HubSpot integration.
 
 ### Running the Application
 
-Start the application:
+You can run the application in two ways:
 
-```bash
-make run
-```
+1. Using Python directly:
+
+   ```bash
+   make run
+   ```
+
+2. Using Docker:
+
+   ```bash
+   # Build the container
+   make docker-build
+
+   # Start the container
+   make docker-up
+
+   # Stop the container
+   make docker-down
+   ```
 
 The API will be available at http://localhost:8000
 
